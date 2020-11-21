@@ -1,0 +1,20 @@
+{
+    "name": "tayfunerbilen/prototurk-mvc",
+    "description": "Framework for Prototurk",
+    "type": "framework",
+    "require": {
+        "vlucas/phpdotenv": "^5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Prototurk\\": "./"
+        },
+        "files": ["Core/helpers.php"]
+    },
+    "authors": [
+        {
+            "name": "tayfunerbilen",
+            "email": "tayfunerbilen@gmail.com"
+        }
+    ]
+}
