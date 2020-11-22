@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
 require __DIR__ . '/vendor/autoload.php';
 
 use \Prototurk\Core\{App, Route};
@@ -9,22 +12,10 @@ $app = new \Prototurk\Core\App();
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->load();
 
-Route::get('/', 'Home@index');
-Route::get('/user/:id1/:id2', 'User@detail')->name('user');
+require __DIR__ . '/App/routes/web.php';
 
-Route::prefix('/admin')->group(function(){
-
-    Route::get('/?', function(){
-        return 'admin home page';
-    });
-
-    Route::get('/users', function(){
-        return 'admin user page';
-    });
-
-});
-
-// /admin/
-// /admin/users
+Route::prefix('/api');
+require __DIR__ . '/App/routes/api.php';
+Route::$prefix = '';
 
 Route::dispatch();

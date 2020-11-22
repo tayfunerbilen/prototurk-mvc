@@ -3,7 +3,9 @@
     "description": "Framework for Prototurk",
     "type": "framework",
     "require": {
-        "vlucas/phpdotenv": "^5.2"
+        "vlucas/phpdotenv": "^5.2",
+        "jenssegers/blade": "^1.4",
+      "ext-pdo": "*"
     },
     "autoload": {
         "psr-4": {
