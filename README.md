@@ -46,7 +46,7 @@ Route::get('user/:id/:url', function($userId, $userUrl){
 });
 ```
 
-#### Adlandırılmış Rotalar
+#### `name()` Metodu
 
 Rotalarınızı adlandırarak daha sonra ilgili isimle url'lerinizi oluşturabilirsiniz.
 
@@ -59,7 +59,7 @@ echo route('user', ['id' => 5]);
 # /user/5
 ```
 
-#### Rota Öneki (prefix) ve Gruplama
+#### `prefix()` ve `group()` Metodları
 Belli bir önek ile rotalarınızı gruplayabilirsiniz. Örneğin `admin/` altındaki tüm rotalarınızı tek bir grupta toplayabilirsiniz.
 
 ```php
@@ -73,9 +73,43 @@ Route::prefix('/admin')->group(function(){
 });
 ```
 
-#### Controller kullanımı
+#### `where()` Metodu
+Özel parametre belirtmek için bu metodu kullanabilirsiniz.
+```php
+# /@tayfunerbilen
+Route::get('/@:username', function($username){
+    return 'Üye = ' . $username;
+})->where('username', '[a-z]+');
+```
+Bir başka örnek
+```php
+# /search/kelime
+Route::get('/search/:keyword', function($keyword){
+    return 'Aranan kelime = ' . rawurldecode($keyword);
+})->where('keyword', '.*');
+```
+
+#### `redirect()` Metodu
+Gelen bir isteği başka bir rotaya yönlendirmek için kullanabilirsiniz. Örneğin;
+
+```php
+Route::redirect('/php-dersleri', '/php', 301);
+```
+
+#### Controller ile kullanımı
 
 ```php
 Route::get('/', 'Home@index');
 # App/Controllers/Home.php altında index metodunu çağırır
+```
+
+## Yardımcı Fonksiyonlar
+
+Projenin genelinde global olarak kullanileceğiniz yardımcı fonksiyonlar.
+
+```php
+view($name, $data = []);
+model($name);
+route($name, $params = []);
+url($name, $params = []);
 ```
