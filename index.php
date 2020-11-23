@@ -7,15 +7,12 @@ require __DIR__ . '/vendor/autoload.php';
 
 use \Prototurk\Core\{App, Route};
 
-$app = new \Prototurk\Core\App();
+require_once __DIR__ . '/App/bootstrap.php';
+
 
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->load();
 
-require __DIR__ . '/App/routes/web.php';
-
-Route::prefix('/api');
-require __DIR__ . '/App/routes/api.php';
-Route::$prefix = '';
+$app = new App();
 
 Route::dispatch();
