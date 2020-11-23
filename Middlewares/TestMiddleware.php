@@ -10,7 +10,7 @@ class TestMiddleware extends Middleware
 
 	function interrupt()
 	{
-		if(request()->input('test') || request()->input('test')==""){
+		if(request()->input('test') !== false){
 			return;
 		}
 		throw new \Exception('Test değeri gönderilmedi!');

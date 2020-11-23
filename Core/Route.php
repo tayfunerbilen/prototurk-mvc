@@ -44,7 +44,6 @@ class Route
     {
 
 	    $url = Request::getUrl();
-	    echo $url;
         $method = Request::getMethod();
 
         foreach (self::$routes[$method] as $path => $props) {

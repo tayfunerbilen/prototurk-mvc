@@ -3,8 +3,15 @@
 
 namespace Prototurk\Core;
 
+use Prototurk\Core\Helpers\Singleton;
 
-class Request extends Helpers\Singleton
+/**
+ * @class Request
+ * @extends Prototurk\Core\Helpers\Singleton
+ * @package Prototurk\Core
+ * @author Utku Korkmaz <uutkukorkmaz@gmail.com>
+*/
+class Request extends Singleton
 {
 	/**
 	 * @var string $uri İstek gönderilen URL uzantısını barındırır
@@ -38,6 +45,8 @@ class Request extends Helpers\Singleton
 	}
 
 	/**
+	 * İstek metodunu alır
+	 *
 	 * @return string
 	 */
 	public static function getMethod(): string
@@ -46,6 +55,8 @@ class Request extends Helpers\Singleton
 	}
 
 	/**
+	 * İstek URL'ini alır
+	 *
 	 * @return string
 	 */
 	public static function getUrl(): string
@@ -53,17 +64,33 @@ class Request extends Helpers\Singleton
 		return self::$uri;
 	}
 
-	protected static function parse()
+	/**
+	 * İstek URL'ini işler
+	 *
+	 * @return string
+	 */
+	protected static function parse(): string
 	{
 		return self::$uri = str_replace($_ENV['BASE_PATH'], null, $_SERVER['REQUEST_URI']);
 	}
 
-	protected static function middleware($middleware)
+	/**
+	 * Bir middleware tanımlar
+	 *
+	 * @param string $middleware
+	 * @return void
+	 */
+	protected static function middleware(string $middleware): void
 	{
 		self::$middlewares[] = new $middleware();
 	}
 
-	public function dispatch()
+	/**
+	 * Tanımlanan middleware'ler ile isteği duraklatır ve tanımlanan interrupt'ları çağırır.
+	 *
+	 * @return void
+	 */
+	public function dispatch(): void
 	{
 		if (count(self::$middlewares)) {
 			foreach (self::$middlewares as $interrupt) {
@@ -72,15 +99,27 @@ class Request extends Helpers\Singleton
 		}
 	}
 
-	public static function setMiddlewares(array $middlewares)
+	/**
+	 * İsteği interrupt etmesini istediğimiz middleware'leri tanımlar.
+	 *
+	 * @return void
+	*/
+	public static function setMiddlewares(array $middlewares): void
 	{
 		foreach ($middlewares as $middleware) {
 			self::middleware($middleware);
 		}
 	}
 
-	public function input($name = '')
+	/**
+	 * İstek metoduna ait gönderilen verileri döndürür
+	 *
+	 * @param string|null $name
+	 * @return mixed
+	 */
+	public function input(?string $name = null)
 	{
+
 		switch (self::getMethod()) {
 			case "put":
 			case "delete":
@@ -88,9 +127,17 @@ class Request extends Helpers\Singleton
 			default:
 				return false;
 			case "get":
-				return $_GET[$name] ?? false;
+				if (!is_null($name)) {
+					return isset($_GET[$name]) ? $_GET[$name] : false;
+				} else {
+					return $_GET;
+				}
 			case "post":
-				return $_POST[$name] ?? false;
+				if (!is_null($name)) {
+					return $_POST[$name] ?? false;
+				} else {
+					return $_POST;
+				}
 		}
 	}
 
