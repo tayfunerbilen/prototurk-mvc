@@ -38,3 +38,9 @@ function model(string $name){
     $name = '\Prototurk\App\Models\\' . $name;
     return new $name();
 }
+/**
+ * @return \Prototurk\Core\Request
+*/
+function request(){
+	return \Prototurk\Core\Request::getInstance();
+}

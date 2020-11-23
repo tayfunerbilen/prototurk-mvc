@@ -42,8 +42,11 @@ class Route
 
     public static function dispatch()
     {
-        $url = self::getUrl();
-        $method = self::getMethod();
+
+	    $url = Request::getUrl();
+	    echo $url;
+        $method = Request::getMethod();
+
         foreach (self::$routes[$method] as $path => $props) {
 
             foreach (self::$patterns as $key => $pattern) {
@@ -61,7 +64,7 @@ class Route
                 } else {
 
                     $callback = $props['callback'];
-
+					request()->dispatch();
                     if (is_callable($callback)) {
                         echo call_user_func_array($callback, $params);
                     } elseif (is_string($callback)) {
@@ -88,21 +91,6 @@ class Route
         }
     }
 
-    /**
-     * @return string
-     */
-    public static function getMethod(): string
-    {
-        return strtolower($_SERVER['REQUEST_METHOD']);
-    }
-
-    /**
-     * @return string
-     */
-    public static function getUrl(): string
-    {
-        return str_replace(getenv('BASE_PATH'), null, $_SERVER['REQUEST_URI']);
-    }
 
     public function name(string $name): void
     {
